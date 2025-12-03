@@ -20,7 +20,7 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         source: "."
-        target: "/home/ubuntu/meu_app"
+        target: "/home/ubuntu/app.py"
 
     - name: Executar deploy
       uses: appleboy/ssh-action@v1.0.3
@@ -29,6 +29,6 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
-          cd /home/ubuntu/meu_app
+          cd /home/ubuntu/app.py
           chmod +x deploy.sh
           ./deploy.sh
