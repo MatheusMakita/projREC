@@ -1,0 +1,33 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Copiar arquivos
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_H }}
+        username: ubuntu
+        key: ${{ secrets.EC2_K }}
+        source: "."
+        target: "/home/ubuntu/meu_app"
+
+    - name: Executar script de deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_H }}
+        username: ubuntu
+        key: ${{ secrets.EC2_K }}
+        script: |
+          cd /home/ubuntu/meu_app
+          chmod +x deploy.sh
+          ./deploy.sh
